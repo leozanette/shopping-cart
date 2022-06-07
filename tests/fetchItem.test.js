@@ -13,7 +13,7 @@ describe('2 - Teste a função fetchItem', () => {
     expect.assertions(3);
     expect(fetch).toHaveBeenCalled();
     expect(fetch).toHaveBeenCalledWith('https://api.mercadolibre.com/items/MLB1615760527');
-    await expect(response).toEqual(item);
+    await expect(response.id).toEqual(item.id);
   });
 
   it('teste se a função fetch é chamada', async () => {
