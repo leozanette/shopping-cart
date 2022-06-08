@@ -1,3 +1,12 @@
+// const createLocalStorage = () => {
+//   if (localStorage.getItem('cartItems') === null) {
+//     localStorage.setItem('cartItems', '[]');
+//   }
+// };
+
+//---------------------------------------------------------------------
+const carrinho = document.querySelector('.cart__items');
+
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -15,7 +24,7 @@ const createCustomElement = (element, className, innerText) => {
 const createProductItemElement = ({ sku, name, image }) => {
   const section = document.createElement('section');
   section.className = 'item';
-
+  
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
@@ -41,6 +50,7 @@ const arrayProdutos = async () => {
 //----------------------------------------------------------------------------
 const cartItemClickListener = (event) => {
   event.target.remove();
+  saveCartItems(carrinho.innerHTML);
 };
 
 //------------------------------------------------------------------------------------------
@@ -58,18 +68,30 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 const putInCart = () => {
   document.addEventListener('click', async (event) => {
     if (event.target.className === 'item__add') {
-      const carrinho = document.querySelector('.cart__items');
       const sku = getSkuFromProductItem(event.target.parentElement);
       const item = await fetchItem(sku);
       const { id, title, price } = item;
       const obj = { sku: id, name: title, salePrice: price };
       const li = createCartItemElement(obj);
       carrinho.appendChild(li);
+      saveCartItems(carrinho.innerHTML);
     }
   });
 };
 
+//--------------------------------------------------------
+
+const getListLocalStorage = () => {
+  const lista = getSavedCartItems();
+  carrinho.innerHTML = lista;
+  const itens = document.getElementsByClassName('cart__item');
+  const array = [...itens];
+  array.forEach((iten) => iten.addEventListener('click', cartItemClickListener));
+};
+
 window.onload = () => {
+  // createLocalStorage();
+  getListLocalStorage();
   arrayProdutos();
   putInCart();
 };
