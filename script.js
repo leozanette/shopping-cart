@@ -89,9 +89,20 @@ const getListLocalStorage = () => {
   array.forEach((iten) => iten.addEventListener('click', cartItemClickListener));
 };
 
+//----------------------------------------------------------
+
+const emptyCart = () => {
+  const button = document.querySelector('.empty-cart');
+  button.addEventListener('click', () => {
+    carrinho.replaceChildren();
+    saveCartItems(carrinho.innerHTML);
+  });
+};
+
 window.onload = () => {
   // createLocalStorage();
   getListLocalStorage();
   arrayProdutos();
   putInCart();
+  emptyCart();
 };
