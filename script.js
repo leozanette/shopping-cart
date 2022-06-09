@@ -24,7 +24,7 @@ const createCustomElement = (element, className, innerText) => {
 const createProductItemElement = ({ sku, name, image }) => {
   const section = document.createElement('section');
   section.className = 'item';
-  
+
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
@@ -46,11 +46,26 @@ const arrayProdutos = async () => {
     document.querySelector('.items').appendChild(section);
   });
 };
+//---------------------------------------------------
+const somaCart = () => {
+  const itens = document.getElementsByClassName('cart__item');
+  const array = [...itens];
+  const text = array.map((item) => item.innerText);
+  let total = 0;
+  text.forEach((item) => {
+    const parte = item.search('PRICE:');
+    const slice = Number(item.slice(parte + 8));
+    total += slice;
+  });
+  const totalPrice = document.querySelector('.total-price');
+  totalPrice.innerHTML = total;
+};
 
 //----------------------------------------------------------------------------
 const cartItemClickListener = (event) => {
   event.target.remove();
   saveCartItems(carrinho.innerHTML);
+  somaCart();
 };
 
 //------------------------------------------------------------------------------------------
@@ -75,6 +90,7 @@ const putInCart = () => {
       const li = createCartItemElement(obj);
       carrinho.appendChild(li);
       saveCartItems(carrinho.innerHTML);
+      somaCart();
     }
   });
 };
@@ -96,13 +112,24 @@ const emptyCart = () => {
   button.addEventListener('click', () => {
     carrinho.replaceChildren();
     saveCartItems(carrinho.innerHTML);
+    somaCart();
   });
+};
+
+//----------------------------------------------------------------------------
+const totalPrice = () => {
+  const section = document.querySelector('.cart');
+  const p = document.createElement('p');
+  p.className = 'total-price';
+  section.appendChild(p);
 };
 
 window.onload = () => {
   // createLocalStorage();
+  totalPrice();
   getListLocalStorage();
   arrayProdutos();
   putInCart();
   emptyCart();
+  // somaCart();
 };
