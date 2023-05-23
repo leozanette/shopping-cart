@@ -1,10 +1,3 @@
-// const createLocalStorage = () => {
-//   if (localStorage.getItem('cartItems') === null) {
-//     localStorage.setItem('cartItems', '[]');
-//   }
-// };
-
-//---------------------------------------------------------------------
 const carrinho = document.querySelector('.cart__items');
 
 const createProductImageElement = (imageSource) => {
